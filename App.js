@@ -6,9 +6,12 @@ import {
   ImageBackground,
   TextInput,
   Button,
+  TouchableOpacity,
+  Platform,
 } from "react-native";
 
 export default function App() {
+  // console.log(Platform.OS);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -28,15 +31,18 @@ export default function App() {
           <TextInput
             style={styles.input}
             placeholder={"Пароль"}
-            secureTextEntr={true}
+            secureTextEntry={true}
           />
-          <Button
+          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+            <Text style={styles.btnTitle}>Зареєструватися</Text>
+          </TouchableOpacity>
+          {/* <Button
             onPress={null}
             title="Зареєструватися"
             color="#FF6C00"
             accessibilityLabel="Register"
             style={styles.button}
-          />
+          /> */}
         </View>
 
         <StatusBar style="auto" />
@@ -61,7 +67,8 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
+    // justifyContent: "flex-end",
+    justifyContent: Platform.OS === "ios" ? "flex-end" : "center",
   },
   // innerContainer: {
   //   // position: "relative",
@@ -93,9 +100,19 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    height: 51,
     marginTop: 43,
-    color: "#FF6C00",
+    padding: 16,
+    backgroundColor: Platform.OS === "ios" ? "#007AFF" : "#FF6C00",
     borderRadius: 100,
     borderColor: "transparent",
+    // borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  btnTitle: {
+    color: "#FFFFFF",
+    fontSize: 16,
   },
 });
