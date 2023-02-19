@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -5,48 +6,85 @@ import {
   View,
   ImageBackground,
   TextInput,
-  Button,
+  // Button,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 export default function App() {
   // console.log(Platform.OS);
+
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.image}
-        source={require("./assets/images/PhotoBG.jpg")}
-      >
-        {/* <Text style={styles.text}>Open up React native!</Text> */}
-        <View style={styles.form}>
-          <TextInput
-            style={{ ...styles.input, marginBottom: 16 }}
-            placeholder={"Логін"}
-          />
-          <TextInput
-            style={{ ...styles.input, marginBottom: 16 }}
-            placeholder={"Адреса електронної пошти"}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={"Пароль"}
-            secureTextEntry={true}
-          />
-          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-            <Text style={styles.btnTitle}>Зареєструватися</Text>
-          </TouchableOpacity>
-          {/* <Button
+      <TouchableWithoutFeedback onPress={keyboardHide}>
+        <ImageBackground
+          style={styles.image}
+          source={require("./assets/images/PhotoBG.jpg")}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : null}
+          >
+            <View style={styles.header}>
+              <Text style={styles.pageTitle}>Реєстрація</Text>
+            </View>
+            <View
+              style={{ ...styles.form, marginBottom: isShowKeyboard ? -32 : 0 }}
+            >
+              <TextInput
+                style={{ ...styles.input, marginBottom: 16 }}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                placeholder={"Логін"}
+              />
+              <TextInput
+                style={{ ...styles.input, marginBottom: 16 }}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                placeholder={"Адреса електронної пошти"}
+              />
+              <TextInput
+                style={styles.input}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                }}
+                placeholder={"Пароль"}
+                secureTextEntry={true}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                activeOpacity={0.8}
+                onPress={keyboardHide}
+              >
+                <Text style={styles.btnTitle}>Зареєструватися</Text>
+              </TouchableOpacity>
+              <Text style={styles.alreadySignedText}>
+                Уже есть аккаунт? Войти
+              </Text>
+              {/* <Button
             onPress={null}
             title="Зареєструватися"
             color="#FF6C00"
             accessibilityLabel="Register"
             style={styles.button}
           /> */}
-        </View>
-
-        <StatusBar style="auto" />
-      </ImageBackground>
+            </View>
+            {/* <StatusBar style="auto" /> */}
+          </KeyboardAvoidingView>
+          {/* <Text style={styles.text}>Open up React native!</Text> */}
+        </ImageBackground>
+      </TouchableWithoutFeedback>
     </View>
   );
 }
@@ -67,8 +105,8 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    // justifyContent: "flex-end",
-    justifyContent: Platform.OS === "ios" ? "flex-end" : "center",
+    justifyContent: "flex-end",
+    // justifyContent: Platform.OS === "ios" ? "flex-end" : "center",
   },
   // innerContainer: {
   //   // position: "relative",
@@ -81,6 +119,16 @@ const styles = StyleSheet.create({
   // },
   form: {
     marginHorizontal: 16,
+    // marginBottom: 32,
+  },
+
+  header: { marginBottom: 33 },
+
+  pageTitle: {
+    fontSize: 30,
+    lineHeight: 35,
+    color: "#212121",
+    textAlign: "center",
   },
 
   input: {
@@ -103,16 +151,34 @@ const styles = StyleSheet.create({
     height: 51,
     marginTop: 43,
     padding: 16,
-    backgroundColor: Platform.OS === "ios" ? "#007AFF" : "#FF6C00",
     borderRadius: 100,
     borderColor: "transparent",
     // borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
+
+    ...Platform.select({
+      ios: {
+        backgroundColor: "#007AFF",
+      },
+
+      android: {
+        backgroundColor: "#FF6C00",
+      },
+    }),
   },
 
   btnTitle: {
     color: "#FFFFFF",
     fontSize: 16,
+  },
+
+  alreadySignedText: {
+    fontSize: 16,
+    // color: "#1B4371",
+    color: "#FFFFFF",
+    textAlign: "center",
+    marginTop: 16,
+    marginBottom: 78,
   },
 });
