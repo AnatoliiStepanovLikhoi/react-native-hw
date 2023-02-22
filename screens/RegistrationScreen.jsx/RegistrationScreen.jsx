@@ -14,11 +14,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import RegistrationScreen from "./screens/RegistrationScreen.jsx/RegistrationScreen";
-
-export default function App() {
-  // console.log(Platform.OS);
-
+export default function RegistrationScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
   const keyboardHide = () => {
@@ -27,22 +23,63 @@ export default function App() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <RegistrationScreen />
-      </View>
-    </TouchableWithoutFeedback>
+    <ImageBackground
+      style={styles.image}
+      source={require("./assets/images/PhotoBG.jpg")}
+    >
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : null}>
+        <View style={styles.header}>
+          <Text style={styles.pageTitle}>Реєстрація</Text>
+        </View>
+        <View
+          style={{ ...styles.form, marginBottom: isShowKeyboard ? -32 : 0 }}
+        >
+          <TextInput
+            style={{ ...styles.input, marginBottom: 16 }}
+            onFocus={() => {
+              setIsShowKeyboard(true);
+            }}
+            placeholder={"Логін"}
+          />
+          <TextInput
+            style={{ ...styles.input, marginBottom: 16 }}
+            onFocus={() => {
+              setIsShowKeyboard(true);
+            }}
+            placeholder={"Адреса електронної пошти"}
+          />
+          <TextInput
+            style={styles.input}
+            onFocus={() => {
+              setIsShowKeyboard(true);
+            }}
+            placeholder={"Пароль"}
+            secureTextEntry={true}
+          />
+          <TouchableOpacity
+            style={styles.button}
+            activeOpacity={0.8}
+            onPress={keyboardHide}
+          >
+            <Text style={styles.btnTitle}>Зареєструватися</Text>
+          </TouchableOpacity>
+          <Text style={styles.alreadySignedText}>Уже есть аккаунт? Войти</Text>
+          {/* <Button
+            onPress={null}
+            title="Зареєструватися"
+            color="#FF6C00"
+            accessibilityLabel="Register"
+            style={styles.button}
+          /> */}
+        </View>
+        {/* <StatusBar style="auto" /> */}
+      </KeyboardAvoidingView>
+      {/* <Text style={styles.text}>Open up React native!</Text> */}
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
-  },
-
   text: {
     color: "white",
     fontSize: 48,
