@@ -1,37 +1,40 @@
-import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  TextInput,
-  // Button,
-  TouchableOpacity,
-  Platform,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { useEffect, useState, useCallback } from "react";
+// import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View, ActivityIndicator } from "react-native";
+
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+// import { AppLoading } from "expo";
 
 import RegistrationScreen from "./screens/RegistrationScreen.jsx/RegistrationScreen";
+import LoginScreen from "./screens/LoginScreen/LoginScreen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   // console.log(Platform.OS);
 
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [fontsLoaded] = useFonts({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+  });
 
-  const keyboardHide = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  };
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return <ActivityIndicator size="large" color="#00ff00" />;
+  }
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        <RegistrationScreen />
-      </View>
-    </TouchableWithoutFeedback>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      <RegistrationScreen />
+      {/* <LoginScreen /> */}
+    </View>
   );
 }
 
