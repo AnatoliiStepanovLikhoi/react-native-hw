@@ -3,7 +3,6 @@
     "name": "react-native-hw",
     "slug": "react-native-hw",
     "version": "1.0.0",
-    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -26,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "infoPlist": {
+      "UISupportedInterfaceOrientations": [
+        "UIInterfaceOrientationLandscapeLeft",
+        "UIInterfaceOrientationLandscapeRight"
+      ]
     }
   }
 }
